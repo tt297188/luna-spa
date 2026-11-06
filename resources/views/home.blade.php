@@ -21,12 +21,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
             box-shadow: 0 2px 10px #ddd;
         }
         .logo {
-            font-size: 28px;
+            font-size: 30px;
             color: #a87962;
             font-weight: bold;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
         nav a {
             text-decoration: none;
@@ -132,6 +136,8 @@
         </a>
     </div>
 </section>
+@include('partials.gallery')
+
 <section class="section">
     <h2>Chào mừng đến với Luna Spa</h2>
     <p>
