@@ -21,4 +21,17 @@ class Service extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    // Lấy tất cả đánh giá thuộc dịch vụ này
+    public function reviews()
+    {
+        return $this->hasManyThrough(
+            Review::class,
+            Booking::class,
+            'service_id',
+            'booking_id',
+            'id',
+            'id'
+        );
+    }
 }

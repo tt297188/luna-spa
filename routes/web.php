@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/tra-cuu-lich-hen', [BookingLookupController::class, 'index'])
     ->name('booking.lookup');
@@ -80,5 +81,17 @@ Route::get('/admin/bookings', [AdminBookingController::class, 'index'])
     ->name('admin.bookings.index');
 Route::put('/admin/bookings/{id}/status', [AdminBookingController::class, 'updateStatus'])
     ->name('admin.bookings.status');
+// Quản lý đánh giá
+Route::get('/admin/reviews', [ReviewController::class, 'index'])
+    ->name('admin.reviews.index');
+
+Route::put('/admin/reviews/{id}/status', [ReviewController::class, 'updateStatus'])
+    ->name('admin.reviews.status');
+
+Route::delete('/admin/reviews/{id}', [ReviewController::class, 'destroy'])
+    ->name('admin.reviews.destroy');
+    
 Route::get('/admin/stats', [StatsController::class, 'index'])
     ->name('admin.stats.index');
+Route::post('/danh-gia/{id}', [ReviewController::class, 'store'])
+    ->name('review.store');

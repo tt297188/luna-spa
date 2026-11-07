@@ -54,6 +54,42 @@
                 grid-template-columns: 1fr;
             }
         }
+        .service-reviews {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .service-reviews h4 {
+            color: #8b5e83;
+            margin-bottom: 10px;
+        }
+
+        .average-rating {
+            color: #b8860b;
+            font-weight: bold;
+        }
+
+        .review-item {
+            background: #fff8fc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .stars {
+            color: #d6a33f;
+            margin: 0 0 5px;
+        }
+
+        .review-item p {
+            margin: 5px 0;
+        }
+
+        .review-item small {
+            color: #888;
+        }
     </style>
 </head>
 <body>
@@ -80,6 +116,40 @@
                     <p>Danh mục: {{ $service->category->name }}</p>
                 @endif
                 <a href="{{ route('booking') }}">Đặt lịch ngay</a>
+                <div class="service-reviews">
+    <h4>Đánh giá khách hàng</h4>
+
+    @if($service->reviews->count() > 0)
+
+        @php
+            $averageRating = $service->reviews->avg('rating');
+        @endphp
+
+        <p class="average-rating">
+            ⭐ {{ number_format($averageRating, 1) }}/5
+            ({{ $service->reviews->count() }} đánh giá)
+        </p>
+
+        @foreach($service->reviews->take(2) as $review)
+            <div class="review-item">
+                <p class="stars">
+                    @for($i = 1; $i <= 5; $i++)
+                        {{ $i <= $review->rating ? '★' : '☆' }}
+                    @endfor
+                </p>
+
+                <p>{{ $review->comment }}</p>
+
+                <small>
+                    {{ $review->booking->customer->name ?? 'Khách hàng' }}
+                </small>
+            </div>
+        @endforeach
+
+    @else
+        <p>Chưa có đánh giá nào.</p>
+    @endif
+</div>
             </div>
         @empty
             <p>Hiện chưa có dịch vụ nào.</p>

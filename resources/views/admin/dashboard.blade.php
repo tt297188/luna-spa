@@ -115,6 +115,9 @@
             <a href="{{ route('admin.stats.index') }}">
                 Thống kê doanh thu
             </a>
+            <a href="{{ route('admin.reviews.index') }}">
+                Quản lý đánh giá
+            </a>
 
         </div>
     </div>

@@ -64,6 +64,14 @@
     <h1>LUNA SPA</h1>
     <h2>Tra cứu lịch hẹn</h2>
 
+@if(session('success'))
+    <p style="color:green">{{ session('success') }}</p>
+@endif
+
+@if(session('error'))
+    <p style="color:red">{{ session('error') }}</p>
+@endif
+
     <form action="{{ route('booking.search') }}" method="POST">
         @csrf
 
@@ -101,8 +109,62 @@
                         {{ $booking->booking_time }}
                     </p>
                     <p><strong>Trạng thái:</strong>
-                        {{ $booking->status }}
-                    </p>
+    @if($booking->status == 'completed')
+        <span style="color:green">Đã hoàn thành</span>
+    @elseif($booking->status == 'confirmed')
+        Đã xác nhận
+    @elseif($booking->status == 'pending')
+        Đang chờ xác nhận
+    @else
+        Đã hủy
+    @endif
+</p>
+
+@if($booking->status == 'completed')
+
+    @if($booking->review)
+        <p style="color:green">
+            Bạn đã đánh giá lịch hẹn này.
+        </p>
+
+        <p>
+            <strong>Đánh giá:</strong>
+            {{ $booking->review->rating }}/5 sao
+        </p>
+
+        <p>
+            {{ $booking->review->comment }}
+        </p>
+
+    @else
+        <h3 style="color:#a87962">Đánh giá dịch vụ</h3>
+
+        <form action="{{ route('review.store', $booking->id) }}"
+              method="POST">
+            @csrf
+
+            <label>Chọn số sao:</label>
+            <select name="rating" required
+                    style="padding:10px; margin:10px 0; width:100%">
+                <option value="">-- Chọn số sao --</option>
+                <option value="5">★★★★★ - Rất hài lòng</option>
+                <option value="4">★★★★ - Hài lòng</option>
+                <option value="3">★★★ - Bình thường</option>
+                <option value="2">★★ - Chưa hài lòng</option>
+                <option value="1">★ - Không hài lòng</option>
+            </select>
+
+            <label>Nhận xét của bạn:</label>
+            <textarea name="comment" required
+                      placeholder="Chia sẻ cảm nhận của bạn..."
+                      style="width:100%; padding:10px; margin:10px 0"
+                      rows="4"></textarea>
+
+            <button type="submit">GỬI ĐÁNH GIÁ</button>
+        </form>
+    @endif
+
+@endif
                 </div>
             @endforeach
 

@@ -26,4 +26,10 @@ class Booking extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    // Một lịch hẹn có một đánh giá
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
 }

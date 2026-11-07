@@ -18,7 +18,15 @@ class BookingLookupController extends Controller
             'phone' => 'required|string|max:15',
         ]);
 
-        $bookings = Booking::with(['customer', 'service'])
+        // Lưu số điện thoại vào session để xác minh
+        // khách đang tra cứu lịch của chính mình
+        session(['review_phone' => $request->phone]);
+
+        $bookings = Booking::with([
+            'customer',
+            'service',
+            'review'
+        ])
             ->whereHas('customer', function ($query) use ($request) {
                 $query->where('phone', $request->phone);
             })
